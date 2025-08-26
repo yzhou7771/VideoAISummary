@@ -4,97 +4,6 @@
 
 This is a Chrome extension that extracts 3-5 key conclusions from YouTube stock analysis videos with one click.
 
-## 🏗️ Project Structure
-
-```
-YoutubeSummary/
-├── extension/ # Chrome extension frontend
-│ ├── manifest.json # Extension configuration
-│ ├── popup.html # Popup UI
-│ ├── popup.js # Frontend logic
-│ ├── content.js # Content script
-│ ├── styles.css # Stylesheet
-│ └── icons/ # Icon assets
-├── server/ # FastAPI backend
-│ ├── app.py # Main application
-│ ├── prompts.py # AI prompt template
-│ ├── requirements.txt # Python dependencies
-│ ├── .env.example # Environment variable template
-│ └── .env # Environment variable configuration
-├── CLAUDE.md # Claude Code workbook
-├── SETUP.md # This setup guide
-└── test_setup.py # Set up the test script
-```
-
-## ⚙️ Installation Steps
-
-### 1. Backend Setup
-
-1. **Install Python dependencies**
-```bash
-cd server
-pip install -r requirements.txt
-```
-
-2. **Configure environment variables**
-- Edit the `server/.env` file
-- Add your OpenAI API key:
-```
-OPENAI_API_KEY=sk-your-actual-api-key-here
-```
-
-3. **Start the backend server**
-```bash
-cd server
-uvicorn app:app --host 0.0.0.0 --port 8000 --reload
-```
-
-### 2. Chrome extension installation
-
-1. **Open the Chrome extension management page**
-- Enter `chrome://extensions/` in the address bar
-
-2. **Enable developer mode**
-- Click the "Developer Mode" switch in the top right corner.
-
-3. **Load the extension**
-- Click "Load unzipped extension"
-- Select the `extension/` folder in your project.
-
-4. **Add an extension icon**
-- Place a 128x128 PNG icon in the `extension/icons/` directory.
-- Name it `icon128.png`
-
-## 🧪 Testing
-
-### Backend Testing
-```bash
-# Run the setup test script
-python test_setup.py
-
-# Manually test the API (requires replacing VIDEO_ID)
-curl "http://localhost:8000/api/summarize?video_id=VIDEO_ID&lang=zh"
-```
-
-### Extension Testing
-1. Open any YouTube video page
-2. Click the extension icon in the Chrome toolbar
-3. Set the backend API address to: `http://localhost:8000`
-4. Click the "One-click Extract Results" button
-
-## 📝 Instructions
-
-1. **Visit the YouTube video page**
-2. **Click the extension icon**
-3. **Configure settings**:
-- Backend API address (default: http://localhost:8000)
-- Output language (Chinese/English)
-4. **Click "One-click extraction of conclusions"**
-5. **Wait for processing** (usually takes 30-60 seconds)
-6. **View results**:
-- 3-5 core conclusions
-- Detailed summary (optional expansion)
-- Transcript preview (optional expansion)
 
 ## ⚠️ Notes
 
@@ -104,24 +13,7 @@ curl "http://localhost:8000/api/summarize?video_id=VIDEO_ID&lang=zh"
 4. **Language support**: Optimized for Chinese content, supports a mix of Chinese and English.
 5. **Chrome version**: A Chrome version that supports Manifest V3 is required.
 
-## 🔧 Troubleshooting
 
-### Backend Issues
-- **Dependencies Not Installed**: Run `pip install -r requirements.txt`
-- **API Key Error**: Check the OpenAI key in the `.env` file
-- **Port In Use**: Change the port or kill the occupying process
-
-### Extension Issues
-- **Unable to Detect Video**: Refresh the YouTube page and try again
-- **Network Error**: Check that the backend service is running properly
-- **Permission Issue**: Confirm that the extension has the necessary permissions
-
-## 🚀 Development Suggestions
-
-- Use the `--reload` flag to enable hot updates for the backend
-- Click "Reload" on the extension management page to update the extension
-- Check the browser developer tools to debug frontend issues
-- Check the terminal output to debug backend issues
 
 ### 🌅 每日使用流程
 
@@ -155,3 +47,101 @@ curl "http://localhost:8000/api/summarize?video_id=VIDEO_ID&lang=zh"
 - 视频需要有清晰的语音内容
 - 音乐视频可能总结效果不佳
 - 非常短的视频（<1分钟）可能内容不足
+
+
+```
+🧪 测试相关文件
+
+  | 文件名                     | 用途        | 说明                      |
+  |-------------------------|-----------|-------------------------|
+  | test_setup.py           | 环境测试      | 测试Python依赖和OpenAI API连接 |
+  | test_cookies.sh         | Cookies测试 | 测试YouTube cookies有效性    |
+  | test_complete_system.sh | 系统集成测试    | 完整的端到端系统测试              |
+  | test_phase3_ux.sh       | UX功能测试    | Phase 3用户体验功能测试         |
+  | simple_server.py        | 简单测试服务器   | 用于基础功能测试的简化服务器          |
+  | run_demo_server.py      | 演示服务器     | 用于演示的服务器启动脚本            |
+  | run_full_server.py      | 完整测试服务器   | 完整功能的测试服务器              |
+  | run_server.py           | 通用测试启动器   | 通用的服务器测试启动脚本            |
+
+  🚫 与Extension无关的文件
+
+  📄 文档类文件 (开发/说明用途)
+
+  | 文件名                                           | 类型     | 用途              |
+  |-----------------------------------------------|--------|-----------------|
+  | README.md                                     | 项目说明   | 项目基础介绍          |
+  | CLAUDE.md                                     | 开发指南   | Claude Code开发说明 |
+  | SETUP.md                                      | 安装指南   | 完整的安装和配置说明      |
+  | CHROME_EXTENSION_GUIDE.md                     | 安装指南   | 扩展安装专门说明        |
+  | COOKIES_SETUP.md                              | 配置指南   | Cookies配置说明     |
+  | EXTENSION_DEBUG.md                            | 调试指南   | 扩展调试帮助文档        |
+  | PROJECT_STATUS.md                             | 项目状态   | 项目完成状态和功能说明     |
+  | solution.md                                   | 解决方案文档 | 技术解决方案说明        |
+  | you_tube_股票视频结论提取插件(chrome_扩展)_mvp_代码与部署指南.md | 早期文档   | 早期的MVP指南文档      |
+
+  🤖 自动化脚本 (服务器管理用途)
+
+  | 文件名                               | 用途        | 说明              |
+  |-----------------------------------|-----------|-----------------|
+  | install_automation.sh             | 自动化安装     | 安装定时任务服务        |
+  | uninstall_automation.sh           | 自动化卸载     | 卸载定时任务服务        |
+  | start_server.sh                   | 服务器启动     | 自动启动后端服务器       |
+  | stop_server.sh                    | 服务器停止     | 自动停止后端服务器       |
+  | startup_helper.sh                 | 启动辅助      | 系统启动时的辅助脚本      |
+  | alfred_workflow.sh                | Alfred集成  | Alfred工作流脚本     |
+  | com.youtube.summarizer.plist      | LaunchD配置 | macOS定时任务配置(启动) |
+  | com.youtube.summarizer.stop.plist | LaunchD配置 | macOS定时任务配置(停止) |
+
+  🛠️ 工具脚本
+
+  | 文件名            | 用途   | 说明              |
+  |----------------|------|-----------------|
+  | create_icon.py | 图标生成 | 生成扩展图标的Python脚本 |
+
+  🗂️ 缓存和临时文件
+
+  | 路径                  | 用途      | 说明            |
+  |---------------------|---------|---------------|
+  | server/cache/*.json | 转录缓存    | 存储视频转录结果的缓存文件 |
+  | server/tmp/         | 临时文件夹   | 音频处理临时文件存储    |
+  | tmp/                | 项目临时文件夹 | 项目级别的临时文件     |
+  | cache/              | 项目缓存文件夹 | 项目级别的缓存文件     |
+
+  ⚙️ 配置文件
+
+  | 文件名                            | 用途        | 说明                  |
+  |--------------------------------|-----------|---------------------|
+  | server/cookies.txt             | YouTube认证 | YouTube访问的cookies文件 |
+  | extension/manifest_simple.json | 备用配置      | 简化版的扩展清单文件          |
+
+  ✅ 核心Extension相关文件 (必需保留)
+
+  | 文件名                         | 用途       | 重要性     |
+  |-----------------------------|----------|---------|
+  | extension/manifest.json     | 扩展配置     | 🔴 核心必需 |
+  | extension/popup.html        | 扩展界面     | 🔴 核心必需 |
+  | extension/popup.js          | 前端逻辑     | 🔴 核心必需 |
+  | extension/content.js        | 内容脚本     | 🔴 核心必需 |
+  | extension/styles.css        | 界面样式     | 🔴 核心必需 |
+  | extension/icons/icon128.png | 扩展图标     | 🔴 核心必需 |
+  | server/app.py               | 后端API    | 🔴 核心必需 |
+  | server/prompts.py           | AI提示词    | 🔴 核心必需 |
+  | server/requirements.txt     | Python依赖 | 🔴 核心必需 |
+
+  📊 文件统计摘要
+
+  - 🧪 测试文件: 8个
+  - 📄 文档文件: 9个
+  - 🤖 自动化脚本: 8个
+  - 🛠️ 工具/配置: 4个
+  - 🗂️ 缓存/临时: 7个文件/文件夹
+  - ✅ 核心扩展文件: 9个
+
+  💡 清理建议
+
+  如果要精简项目，可以考虑移除或归档：
+  1. 测试文件 - 可移至 tests/ 目录
+  2. 文档文件 - 可移至 docs/ 目录
+  3. 自动化脚本 - 可移至 automation/ 目录
+  4. 缓存文件 - 可安全删除（会自动重新生成）
+```
