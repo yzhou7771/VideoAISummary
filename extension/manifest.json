@@ -3,7 +3,7 @@
   "name": "Video Summarizer",
   "version": "0.1.0",
   "description": "AI-powered YouTube video summarization",
-  "permissions": ["storage"],
+  "permissions": ["storage", "activeTab"],
   "action": {
     "default_popup": "popup.html"
   },

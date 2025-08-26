@@ -3,12 +3,15 @@
   console.log('[YT Extension] Content script loaded');
   
   const getVideoId = () => {
+    console.log('[YT Extension] Current URL:', location.href);
     const url = new URL(location.href);
     if (url.hostname.includes('youtube.com')) {
       const videoId = url.searchParams.get('v');
+      console.log('[YT Extension] URL params:', url.searchParams.toString());
       console.log('[YT Extension] Extracted video ID:', videoId);
       return videoId;
     }
+    console.log('[YT Extension] Not a YouTube URL');
     return null;
   };
 
@@ -18,16 +21,27 @@
     
     // 如果标题为空或只是 "YouTube"，尝试从页面元素获取
     if (!title || title === 'YouTube') {
-      const titleElement = document.querySelector('#title h1.ytd-watch-metadata yt-formatted-string') ||
-                          document.querySelector('h1.title.style-scope.ytd-video-primary-info-renderer') ||
-                          document.querySelector('#container h1');
-      if (titleElement) {
-        title = titleElement.textContent.trim();
+      const titleSelectors = [
+        '#title h1.ytd-watch-metadata yt-formatted-string',
+        'h1.title.style-scope.ytd-video-primary-info-renderer',
+        '#container h1',
+        'h1[class*="title"]',
+        'ytd-watch-metadata h1',
+        '.ytd-video-primary-info-renderer h1',
+        '.watch-title'
+      ];
+      
+      for (const selector of titleSelectors) {
+        const titleElement = document.querySelector(selector);
+        if (titleElement && titleElement.textContent.trim()) {
+          title = titleElement.textContent.trim();
+          break;
+        }
       }
     }
     
     console.log('[YT Extension] Extracted title:', title);
-    return title;
+    return title || 'Unknown Title';
   };
 
   const getChannel = () => {
@@ -35,8 +49,13 @@
     const selectors = [
       'ytd-video-owner-renderer a.yt-simple-endpoint',
       '#channel-name a',
-      '#owner-text a',
-      '.ytd-channel-name a'
+      '#owner-text a', 
+      '.ytd-channel-name a',
+      'ytd-channel-name a',
+      '.owner-text a',
+      '.ytd-video-owner-renderer .ytd-channel-name',
+      '[class*="channel"] a',
+      '[class*="owner"] a'
     ];
     
     for (const selector of selectors) {
@@ -49,10 +68,11 @@
     }
     
     console.log('[YT Extension] Channel not found');
-    return '';
+    return 'Unknown Channel';
   };
 
   const sendMeta = () => {
+    console.log('[YT Extension] sendMeta called');
     const meta = { 
       videoId: getVideoId(), 
       title: getTitle(), 
@@ -60,10 +80,21 @@
       url: location.href 
     };
     
-    console.log('[YT Extension] Sending meta:', meta);
+    console.log('[YT Extension] Meta data collected:', meta);
+    
+    if (!meta.videoId) {
+      console.warn('[YT Extension] No video ID found, meta may not be useful');
+    }
     
     if (chrome.runtime?.sendMessage) {
-      chrome.runtime.sendMessage({ type: 'YT_META', payload: meta });
+      console.log('[YT Extension] Sending message to popup');
+      chrome.runtime.sendMessage({ type: 'YT_META', payload: meta }, (response) => {
+        if (chrome.runtime.lastError) {
+          console.error('[YT Extension] Message send error:', chrome.runtime.lastError);
+        } else {
+          console.log('[YT Extension] Message sent successfully, response:', response);
+        }
+      });
     } else {
       console.error('[YT Extension] Chrome runtime not available');
     }

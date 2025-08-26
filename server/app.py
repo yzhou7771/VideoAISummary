@@ -520,17 +520,24 @@ def api_summarize(video_id: str = Query(...), lang: str = Query("zh")):
                     shutil.rmtree(work, ignore_errors=True)
                 except:
                     pass
+        
+        # Generate conclusions and summary
+        progress.next_step("AI总结")
+        conclusions, overall = summarize_conclusions(transcript, lang=lang)
+        preview = transcript[:1200] + ("…" if len(transcript) > 1200 else "")
+        
+        progress.complete()
+        
+        return SummaryResp(
+            video_id=video_id,
+            conclusions=conclusions or ["未提取到明确结论，请查看详细总结或重试。"],
+            summary=overall,
+            transcript_preview=preview,
+        )
     
-    # Generate conclusions and summary
-    conclusions, overall = summarize_conclusions(transcript, lang=lang)
-    preview = transcript[:1200] + ("…" if len(transcript) > 1200 else "")
-    
-    return SummaryResp(
-        video_id=video_id,
-        conclusions=conclusions or ["未提取到明确结论，请查看详细总结或重试。"],
-        summary=overall,
-        transcript_preview=preview,
-    )
+    except Exception as e:
+        progress.error(f"处理失败: {str(e)}")
+        raise
 
 
 if __name__ == "__main__":
