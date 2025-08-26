@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "YT Summary",
+  "version": "0.1.0",
+  "description": "Extract conclusions from YouTube videos",
+  "permissions": ["storage"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://www.youtube.com/*", "*://m.youtube.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="128" height="128" rx="20" fill="#FF0000"/>
+  <rect x="16" y="16" width="96" height="96" rx="12" fill="#FFFFFF"/>
+  <path d="M50 48L78 64L50 80V48Z" fill="#FF0000"/>
+  <text x="64" y="110" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#FFFFFF">YT</text>
+</svg>

@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Video Summarizer",
+  "version": "0.1.0",
+  "description": "AI-powered YouTube video summarization",
+  "permissions": ["storage"],
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "icons": {
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://www.youtube.com/*", "*://m.youtube.com/*"],
+      "js": ["content.js"]
+    }
+  ]
+}

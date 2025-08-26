@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>Summarize Video</title>
+</head>
+<body>
+  <div class="container">
+    <div id="videoMeta" class="meta"></div>
+
+    <label class="row" id="apiRow" style="display: none;">
+      Backend API URL:
+      <input id="apiBase" type="text" placeholder="http://localhost:8000" />
+    </label>
+
+    <label class="row" id="langRow" style="display: none;">
+      Output Language:
+      <select id="lang">
+        <option value="zh">中文</option>
+        <option value="en">English</option>
+      </select>
+    </label>
+
+    <button id="summarizeBtn">Summarize Video</button>
+
+    <div id="status" class="status"></div>
+    <ol id="conclusions" class="list"></ol>
+
+    <details style="display: none;">
+      <summary>查看详细总结</summary>
+      <div id="summary"></div>
+    </details>
+
+    <details style="display: none;">
+      <summary>查看转录片段（可选）</summary>
+      <pre id="transcript" class="mono"></pre>
+    </details>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
